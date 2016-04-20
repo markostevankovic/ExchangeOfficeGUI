@@ -4,6 +4,8 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 
+import model.ExchangeRateTableModel;
+
 /*
  * @author Marko Stevankovic
  */
@@ -14,31 +16,59 @@ public class ExchangeOffice extends JFrame
 	private JPanel panelEast;
 	private JPanel panelSouth;
 	
+	private static final int WIDTH = 800;
+	private static final int HEIGHT = 600;
+	
 	public ExchangeOffice()
-	{
+	{	
 		setTitle("Exchange office");
+		setSize(WIDTH, HEIGHT);
 		setLayout(new BorderLayout());
 		
-		panelCenter = new JPanel();
-		panelEast = new JPanel();
-		panelSouth = new JPanel();
+		panelCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		panelEast = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		panelSouth = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
 		/*
-		 * Adding components to east panel
+		 * Adjusting east panel
 		 */
-		JButton buttonAddExchangeRate = new JButton("Add Exchange Rate");
-		JButton buttonRemoveExchangeRate = new JButton("Remove Exchange Rate");
+		panelEast.setPreferredSize(new Dimension(150, HEIGHT - HEIGHT/10));
+		
+		JButton buttonAddExchangeRate = new JButton("Add ExRate");
+		JButton buttonRemoveExchangeRate = new JButton("Remove ExRate");
 		JButton buttonExchange= new JButton("Exchange");
 		
+		panelEast.add(buttonAddExchangeRate);
+		panelEast.add(buttonRemoveExchangeRate);
+		panelEast.add(buttonExchange);
+		
 		/*
-		 * Adding components to south panel
+		 * Adjusting south panel
 		 */
 		JTextArea textArea = new JTextArea();
+		textArea.setPreferredSize(new Dimension(WIDTH - 2, HEIGHT / 10));
 		
 		Border border = BorderFactory.createEtchedBorder();
 		Border titled = BorderFactory.createTitledBorder(border, "STATUS");
 		
-		panelSouth.add(textArea);
+		panelSouth.setBorder(titled);
+	
+		panelSouth.add(new JScrollPane(textArea));
+		
+		/*
+		 * Adjusting central panel
+		 */
+		panelCenter.setPreferredSize(new Dimension(WIDTH - 150, HEIGHT - HEIGHT/10));
+		
+		String[] columnNames = {"ID", "Abbreviation", "Selling", "Middle", "Buying", "Name"};
+		Object[][] rows = {null, null, null, null, null, null};
+		
+		JTable table = new JTable(new ExchangeRateTableModel());
+		
+		JScrollPane scrollPane = new JScrollPane(table);
+		table.setFillsViewportHeight(true);
+		
+		panelCenter.add(scrollPane);
 		
 		/*
 		 * Adjusting menu bar
@@ -46,7 +76,10 @@ public class ExchangeOffice extends JFrame
 		JMenuBar menuBar = new JMenuBar();
 		
 		JMenu fileMenu = new JMenu("File");
+		JMenu separatorMenu = new JMenu("|");
 		JMenu helpMenu = new JMenu("Help");
+		
+		separatorMenu.setEnabled(false);
 		
 		JMenuItem itemOpen = new JMenuItem("Open");
 		JMenuItem itemSave = new JMenuItem("Save");
@@ -61,6 +94,7 @@ public class ExchangeOffice extends JFrame
 		helpMenu.add(itemAbout);
 		
 		menuBar.add(fileMenu);
+		menuBar.add(separatorMenu);
 		menuBar.add(helpMenu);
 		
 		setJMenuBar(menuBar);
@@ -71,5 +105,7 @@ public class ExchangeOffice extends JFrame
 		add(panelCenter, BorderLayout.CENTER);
 		add(panelEast, BorderLayout.EAST);
 		add(panelSouth, BorderLayout.SOUTH);
+		
+		pack();
 	}
 }
