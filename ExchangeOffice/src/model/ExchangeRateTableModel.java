@@ -1,15 +1,21 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.table.AbstractTableModel;
+
+import exchangeoffice.Currency;
 
 public class ExchangeRateTableModel extends AbstractTableModel
 {
 	String[] columnNames = {"ID", "Abbreviation", "Selling", "Middle", "Buying", "Name"};
+	List<Currency> currencies;
 	
-	/*
-	 * 1) add List attribute which will populate rows of table
-	 * 2) add constructor which takes list of currencies as it's input parameter
-	 */
+	public ExchangeRateTableModel(List<Currency> currencies) 
+	{
+		this.currencies = currencies;
+	}
 	
 	@Override
 	public int getColumnCount()
@@ -20,7 +26,7 @@ public class ExchangeRateTableModel extends AbstractTableModel
 	@Override
 	public int getRowCount() 
 	{
-		return 0;
+		return currencies.size();
 	}
 
 	@Override
@@ -48,5 +54,34 @@ public class ExchangeRateTableModel extends AbstractTableModel
 			case 5: return columnNames[5];
 			default: return "N/A";
 		}	
+	}
+	
+	@Override
+	public void setValueAt(Object aValue, int rowIndex, int columnIndex)
+	{
+		Currency tmp = currencies.get(rowIndex);
+		
+		switch(columnIndex)
+		{
+			case 0: tmp.setId((int)aValue);
+			case 1: tmp.setSymbol((String)aValue);
+			case 2: tmp.setName((String)aValue);
+			case 3: tmp.setBuying((double)aValue);
+			case 4: tmp.setSelling((double)aValue);
+		}
+		
+		// fireTableDataChanged();
+	}
+	
+	public void addCurrency(Currency newCurrency)
+	{
+		currencies.add(newCurrency);
+		fireTableDataChanged();
+	}
+	
+	public void removeCurrency(int row)
+	{
+		currencies.remove(row);
+		fireTableDataChanged();
 	}
 }

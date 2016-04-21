@@ -47,7 +47,7 @@ public class ExchangeOffice extends JFrame implements ActionListener
 	private JMenuItem itemExit;
 	private JMenuItem itemAbout;
 	
-	private JTable table;
+	private static JTable table;
 	
 	private JScrollPane scrollPane;
 	
@@ -126,7 +126,7 @@ public class ExchangeOffice extends JFrame implements ActionListener
 		 */
 		panelCenter.setPreferredSize(new Dimension(WIDTH - 150, HEIGHT - HEIGHT / 10));
 		
-		table = new JTable(new ExchangeRateTableModel());
+		table = new JTable(new ExchangeRateTableModel(ExchangeOfice.getInstanceOfExchangeOffice().getAllCurrencies()));
 		
 		scrollPane = new JScrollPane(table);
 		table.setFillsViewportHeight(true);
@@ -224,6 +224,9 @@ public class ExchangeOffice extends JFrame implements ActionListener
 		
 		else if(source == itemOpen)
 			showOpenDialog();
+		
+		else if(source == itemAdd || source == buttonAddExchangeRate)
+			showAddNewExchangeRateFrame();
 	}
 
 	/*
@@ -335,7 +338,6 @@ public class ExchangeOffice extends JFrame implements ActionListener
 					"ERROR", 
 					JOptionPane.ERROR_MESSAGE);
 		}
-		
 	}
 
 
@@ -360,5 +362,22 @@ public class ExchangeOffice extends JFrame implements ActionListener
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	private void showAddNewExchangeRateFrame()
+	{
+		AddExchangeRateGUI newFrame = new AddExchangeRateGUI();
+		newFrame.setVisible(true);
+		newFrame.setLocationRelativeTo(this);
+	}
+	
+	/*
+	 * static methods for manipulation with table
+	 */
+	
+	public static void addNewCurrency(Currency cur)
+	{
+		ExchangeRateTableModel tableModel = (ExchangeRateTableModel)table.getModel();
+		tableModel.addCurrency(cur);
 	}
 }
