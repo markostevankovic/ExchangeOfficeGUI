@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public interface ExchangeOfficeInterface
 {
-	public void addNewExchangeRate(ExchangeRate rate);
-	public void obrisiValutu(ExchangeRate rate);
-	public double izvrsiTransakciju(ExchangeRate rate, boolean forSelling, double amount);
-	public ArrayList<ExchangeRate> getExchangeRates();
+	public void addNewCurrency(Currency currency);
+	public void removeCurrency(Currency currency);
+	public double executeTransaction(Currency currency, boolean forSelling, double amount);
+	public ArrayList<Currency> getAllCurrencies();
 }

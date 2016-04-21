@@ -2,7 +2,7 @@ package exchangeoffice;
 
 import java.io.Serializable;
 
-public class ExchangeRate implements Serializable
+public class Currency implements Serializable
 {
 	private int id;
 	private String symbol;
@@ -10,14 +10,13 @@ public class ExchangeRate implements Serializable
 	private double buying;
 	private double selling;
 	
-	public ExchangeRate(int id, String symbol, String name, double buying, double selling) 
+	public Currency(int id, String symbol, String name, double buying, double selling) 
 	{
-		super();
-		this.id = id;
-		this.symbol = symbol;
-		this.name = name;
-		this.buying = buying;
-		this.selling = selling;
+		this.setId(id);
+		this.setSymbol(symbol);
+		this.setName(name);
+		this.setBuying(buying);
+		this.setSelling(selling);
 	}
 
 	public int getId() {

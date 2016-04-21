@@ -6,6 +6,11 @@ public class ExchangeRateTableModel extends AbstractTableModel
 {
 	String[] columnNames = {"ID", "Abbreviation", "Selling", "Middle", "Buying", "Name"};
 	
+	/*
+	 * 1) add List attribute which will populate rows of table
+	 * 2) add constructor which takes list of currencies as it's input parameter
+	 */
+	
 	@Override
 	public int getColumnCount()
 	{

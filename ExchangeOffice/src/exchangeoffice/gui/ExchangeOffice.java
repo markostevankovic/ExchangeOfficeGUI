@@ -49,6 +49,10 @@ public class ExchangeOffice extends JFrame implements ActionListener
 	private JButton buttonRemoveExchangeRate;
 	private JButton buttonExchange;
 	
+	private JMenuItem itemAdd;
+	private JMenuItem itemRemove;
+	private JMenuItem itemExchange;
+	
 	private static final int WIDTH = 800;
 	private static final int HEIGHT = 600;
 	
@@ -118,11 +122,15 @@ public class ExchangeOffice extends JFrame implements ActionListener
 		table.setFillsViewportHeight(true);
 		scrollPane.setPreferredSize(new Dimension(WIDTH - 150, HEIGHT - HEIGHT / 10 - 10));
 		
+		itemAdd = new JMenuItem("Add new currency");
+		itemRemove = new JMenuItem("Remove currency");
+		itemExchange = new JMenuItem("Exchange");
+		
 		popUpMenu = new JPopupMenu();
 		
-		popUpMenu.add(itemOpen);
-		popUpMenu.add(itemSave);
-		popUpMenu.add(itemExit);
+		popUpMenu.add(itemAdd);
+		popUpMenu.add(itemRemove);
+		popUpMenu.add(itemExchange);
 		
 		table.setComponentPopupMenu(popUpMenu);
 		
