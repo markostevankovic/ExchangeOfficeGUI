@@ -7,11 +7,21 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 
+import exchangeoffice.Currency;
+import exchangeoffice.ExchangeOfice;
 import model.ExchangeRateTableModel;
 
 /*
@@ -126,6 +136,10 @@ public class ExchangeOffice extends JFrame implements ActionListener
 		itemRemove = new JMenuItem("Remove currency");
 		itemExchange = new JMenuItem("Exchange");
 		
+		itemAdd.addActionListener(this);
+		itemRemove.addActionListener(this);
+		itemExchange.addActionListener(this);
+		
 		popUpMenu = new JPopupMenu();
 		
 		popUpMenu.add(itemAdd);
@@ -157,6 +171,10 @@ public class ExchangeOffice extends JFrame implements ActionListener
 		buttonAddExchangeRate = new JButton("Add ExRate");
 		buttonRemoveExchangeRate = new JButton("Remove ExRate");
 		buttonExchange= new JButton("Exchange");
+		
+		buttonAddExchangeRate.addActionListener(this);
+		buttonRemoveExchangeRate.addActionListener(this);
+		buttonExchange.addActionListener(this);
 		
 		panelEast.add(buttonAddExchangeRate);
 		panelEast.add(buttonRemoveExchangeRate);
@@ -213,15 +231,19 @@ public class ExchangeOffice extends JFrame implements ActionListener
 	 */
 	private void showAbouDialog()
 	{
-		JOptionPane.showMessageDialog(new ExchangeOffice(),
-				"Author: Marko Stevankovic", "About",
+		JOptionPane.showMessageDialog(
+				new ExchangeOffice(),
+				"Author: Marko Stevankovic",
+				"About",
 				JOptionPane.INFORMATION_MESSAGE);	
 	}
 	
 	private void closeTheApplication() 
 	{
-		int option = JOptionPane.showConfirmDialog(new ExchangeOffice(),
-				"Do you want the exit this application???", "Exit",
+		int option = JOptionPane.showConfirmDialog(
+				new ExchangeOffice(),
+				"Do you want the exit this application???",
+				"Exit",
 				JOptionPane.YES_NO_OPTION);
 
 		if (option == JOptionPane.YES_OPTION)
@@ -230,8 +252,64 @@ public class ExchangeOffice extends JFrame implements ActionListener
 	
 	private void showOpenDialog()
 	{
-		// TO DO
+		try 
+		{
+			JFileChooser fileChooser = new JFileChooser();
+			int option = fileChooser.showOpenDialog(this);
+
+			if (option == JFileChooser.APPROVE_OPTION) 
+			{
+				File file = fileChooser.getSelectedFile();
+
+				readFromAFile(file.getAbsolutePath());
+
+				textArea.append("Loaded file: " + file.getAbsolutePath() + "\n");
+			}	
+		} 
+		catch (Exception exc) 
+		{
+			JOptionPane.showMessageDialog(
+					this,
+					exc.getMessage(),
+					"ERROR", 
+					JOptionPane.ERROR_MESSAGE);
+		}
 	}
+
+	private void readFromAFile(String absolutePath)
+	{
+		ObjectInputStream in = null;
+		
+		try
+		{
+			in = new ObjectInputStream(
+					new BufferedInputStream(
+							new FileInputStream(absolutePath)));
+			
+			ArrayList<Currency> list = (ArrayList<Currency>)(in.readObject());
+			
+			ExchangeOfice.getInstanceOfExchangeOffice().getAllCurrencies().clear();
+			
+			ExchangeOfice.getInstanceOfExchangeOffice().getAllCurrencies().addAll(list);
+			
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+		finally
+		{
+			try
+			{
+				in.close();
+			}
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+
 
 	private void showSaveDialog()
 	{
@@ -243,16 +321,44 @@ public class ExchangeOffice extends JFrame implements ActionListener
 			if (option == JFileChooser.APPROVE_OPTION)
 			{
 				File file = fileChooser.getSelectedFile();
-
-				//SOUpisi.upisiUFajl(file.getAbsolutePath(), menjacnica.vratiKursnuListu());
 				
+				saveToAFile(file.getAbsolutePath(), ExchangeOfice.getInstanceOfExchangeOffice().getAllCurrencies());
+				
+				textArea.append("File saved: " + file.getAbsolutePath() + "\n");
 			}
 		}
 		catch (Exception exc) 
 		{
-			JOptionPane.showMessageDialog(this, exc.getMessage(),
-					"Greska", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(
+					this,
+					exc.getMessage(),
+					"ERROR", 
+					JOptionPane.ERROR_MESSAGE);
 		}
 		
+	}
+
+
+	private void saveToAFile(String absolutePath, ArrayList<Currency> currencies) 
+	{
+		ObjectOutputStream out = null;
+		try
+		{
+			out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(absolutePath)));
+			
+			out.writeObject(currencies);
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+		finally
+		{
+			try {
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

@@ -5,8 +5,19 @@ import java.util.ArrayList;
 public class ExchangeOfice implements ExchangeOfficeInterface
 {
 	private ArrayList<Currency> currencies;
+	private static ExchangeOfice object;
 	
-	public ExchangeOfice()
+	/*
+	 * Singleton pattern...
+	 */
+	public static ExchangeOfice getInstanceOfExchangeOffice()
+	{
+		if(object == null)
+			object = new ExchangeOfice();
+		return object;
+	}
+	
+	private ExchangeOfice()
 	{
 		currencies = new ArrayList<Currency>();
 	}
