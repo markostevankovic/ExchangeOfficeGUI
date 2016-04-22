@@ -1,6 +1,8 @@
 package exchangeoffice.gui;
 
 import javax.swing.JFrame;
+
+import exchangeoffice.Currency;
 /*
  * All code generated MANUALY...
  * 

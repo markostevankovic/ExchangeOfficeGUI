@@ -50,6 +50,7 @@ public class ExchangeOffice extends JFrame implements ActionListener
 	private static JTable table;
 	
 	private JScrollPane scrollPane;
+	private JScrollPane scrollPaneTextArea;
 	
 	private JPopupMenu popUpMenu;
 	
@@ -153,8 +154,12 @@ public class ExchangeOffice extends JFrame implements ActionListener
 		/*
 		 * Adjusting south panel
 		 */
+		
 		textArea = new JTextArea();
 		textArea.setPreferredSize(new Dimension(WIDTH - 2, HEIGHT / 10));
+		
+		scrollPaneTextArea = new JScrollPane(textArea);
+		// scrollPaneTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		
 		Border border = BorderFactory.createEtchedBorder();
 		Border titled = BorderFactory.createTitledBorder(border, "STATUS");
@@ -228,6 +233,9 @@ public class ExchangeOffice extends JFrame implements ActionListener
 		
 		else if(source == itemRemove || source == buttonRemoveExchangeRate)
 			removeSelectedCurrency();
+		
+		else if(source == itemExchange || source == buttonExchange)
+			showTransactionGUI();
 	}
 
 	/*
@@ -469,6 +477,34 @@ public class ExchangeOffice extends JFrame implements ActionListener
 			JOptionPane.showMessageDialog(
 					this,
 					"You have to choose/selected one ROW",
+					"ERROR", 
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	/*
+	 * Method which opens up TransatctionGUI frame
+	 */
+	private void showTransactionGUI() 
+	{
+		try
+		{
+			int selectedRow = table.getSelectedRow();
+			
+			ExchangeOfice office = ExchangeOfice.getInstanceOfExchangeOffice();
+			
+			Currency currency = office.getAllCurrencies().get(selectedRow);
+			
+			TransactionGUI frame = new TransactionGUI(currency);
+			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			frame.setVisible(true);
+			frame.setLocationRelativeTo(null);
+		}
+		catch(Exception exc)
+		{
+			JOptionPane.showMessageDialog(
+					this,
+					"You have to choose/selected one ROW!!!",
 					"ERROR", 
 					JOptionPane.ERROR_MESSAGE);
 		}
