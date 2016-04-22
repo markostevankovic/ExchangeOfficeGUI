@@ -14,6 +14,7 @@ public class ExchangeOfice implements ExchangeOfficeInterface
 	{
 		if(object == null)
 			object = new ExchangeOfice();
+		
 		return object;
 	}
 	
@@ -57,5 +58,4 @@ public class ExchangeOfice implements ExchangeOfficeInterface
 		else
 			return amount * currency.getBuying();
 	}
-	
 }

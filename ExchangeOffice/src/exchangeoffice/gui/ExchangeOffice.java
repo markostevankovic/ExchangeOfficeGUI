@@ -53,7 +53,7 @@ public class ExchangeOffice extends JFrame implements ActionListener
 	
 	private JPopupMenu popUpMenu;
 	
-	private JTextArea textArea;
+	private static JTextArea textArea;
 	
 	private JButton buttonAddExchangeRate;
 	private JButton buttonRemoveExchangeRate;
@@ -126,7 +126,7 @@ public class ExchangeOffice extends JFrame implements ActionListener
 		 */
 		panelCenter.setPreferredSize(new Dimension(WIDTH - 150, HEIGHT - HEIGHT / 10));
 		
-		table = new JTable(new ExchangeRateTableModel(ExchangeOfice.getInstanceOfExchangeOffice().getAllCurrencies()));
+		table = new JTable(new ExchangeRateTableModel());
 		
 		scrollPane = new JScrollPane(table);
 		table.setFillsViewportHeight(true);
@@ -205,8 +205,7 @@ public class ExchangeOffice extends JFrame implements ActionListener
 
 
 	/*
-	 * (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 * 
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e)
@@ -230,7 +229,8 @@ public class ExchangeOffice extends JFrame implements ActionListener
 	}
 
 	/*
-	 * Private methods for different actions
+	 * Method which shows message dialog,
+	 * which contains informations about author
 	 */
 	private void showAbouDialog()
 	{
@@ -241,6 +241,10 @@ public class ExchangeOffice extends JFrame implements ActionListener
 				JOptionPane.INFORMATION_MESSAGE);	
 	}
 	
+	/*
+	 * Method which creates confirm dialog in which we choose
+	 * whether we want to close our application.
+	 */
 	private void closeTheApplication() 
 	{
 		int option = JOptionPane.showConfirmDialog(
@@ -253,6 +257,13 @@ public class ExchangeOffice extends JFrame implements ActionListener
 			System.exit(0);	
 	}
 	
+	/*
+	 * Method which creates a new open dialog.
+	 * We choose a file from which we want to read
+	 * list of currencies.
+	 * The goal is to replace our global list of currencies
+	 * with loaded list.
+	 */
 	private void showOpenDialog()
 	{
 		try 
@@ -279,6 +290,10 @@ public class ExchangeOffice extends JFrame implements ActionListener
 		}
 	}
 
+	/*
+	 * Method which replaces our global list of currencies
+	 * with a list of currencies loaded from a choosen file.
+	 */
 	private void readFromAFile(String absolutePath)
 	{
 		ObjectInputStream in = null;
@@ -313,7 +328,9 @@ public class ExchangeOffice extends JFrame implements ActionListener
 		}
 	}
 
-
+	/*
+	 * Method which creates new save dialog.
+	 */
 	private void showSaveDialog()
 	{
 		try
@@ -340,7 +357,10 @@ public class ExchangeOffice extends JFrame implements ActionListener
 		}
 	}
 
-
+	/*
+	 * Method which saves our global list of currencies
+	 * into a file, to a choosen location.
+	 */
 	private void saveToAFile(String absolutePath, ArrayList<Currency> currencies) 
 	{
 		ObjectOutputStream out = null;
@@ -364,6 +384,10 @@ public class ExchangeOffice extends JFrame implements ActionListener
 		}
 	}
 	
+	/*
+	 * Method which creates a new frame
+	 * for adding new currency to our global list of currencies
+	 */
 	private void showAddNewExchangeRateFrame()
 	{
 		AddExchangeRateGUI newFrame = new AddExchangeRateGUI();
@@ -372,12 +396,20 @@ public class ExchangeOffice extends JFrame implements ActionListener
 	}
 	
 	/*
-	 * static methods for manipulation with table
+	 * static methods for updating the content of a table
 	 */
-	
-	public static void addNewCurrency(Currency cur)
+	public static void updateTable()
 	{
 		ExchangeRateTableModel tableModel = (ExchangeRateTableModel)table.getModel();
-		tableModel.addCurrency(cur);
+		tableModel.updateTable();
+	}
+	
+	/*
+	 * Static method for appending text to textArea component
+	 * from another dialogs
+	 */
+	public static void appendTextToTextArea(String text)
+	{
+		textArea.append(text + "\n");
 	}
 }

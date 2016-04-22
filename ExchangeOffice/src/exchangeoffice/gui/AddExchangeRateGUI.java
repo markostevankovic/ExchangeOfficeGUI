@@ -10,7 +10,7 @@ import exchangeoffice.Currency;
 import exchangeoffice.ExchangeOfice;
 
 public class AddExchangeRateGUI extends JFrame implements ActionListener
-{
+{	
 	private JLabel lbID;
 	private JLabel lbName;
 	private JLabel lbSellingRate;
@@ -54,12 +54,13 @@ public class AddExchangeRateGUI extends JFrame implements ActionListener
 		tfAbbreviation = new JTextField();
 		
 		tfMiddleRate.setEnabled(false);
+		tfMiddleRate.setBackground(Color.GRAY);
 		
 		buttonAdd = new JButton("Add");
 		buttonCancel = new JButton("Cancel");
 		
 		buttonAdd.addActionListener(this);
-		buttonAdd.addActionListener(this);
+		buttonCancel.addActionListener(this);
 		
 		panel.add(lbID);
 		panel.add(lbName);
@@ -85,12 +86,15 @@ public class AddExchangeRateGUI extends JFrame implements ActionListener
 		Object source = e.getSource();
 		
 		if(source == buttonCancel)
-			dispose();
+			closeAddExchangeRateGUI();
 		
 		else if(source == buttonAdd)
 			addNewExchangeRateOrCurrency(Integer.parseInt(tfID.getText()), tfName.getText(), Double.parseDouble(tfSellingRate.getText()), Double.parseDouble(tfBuyingRate.getText()), tfAbbreviation.getText());
-	
-		dispose();
+	}
+
+	private void closeAddExchangeRateGUI() 
+	{
+		this.dispose();	
 	}
 
 	private void addNewExchangeRateOrCurrency(int id, String currencyName, double sellingRate, double buyingRate, String currencySymbol) 
@@ -99,13 +103,17 @@ public class AddExchangeRateGUI extends JFrame implements ActionListener
 		{
 			Currency newCurrency = new Currency(id, currencySymbol, currencyName, buyingRate, sellingRate);
 		
-			ExchangeOfice.getInstanceOfExchangeOffice().getAllCurrencies().add(newCurrency);
+			ExchangeOfice office = ExchangeOfice.getInstanceOfExchangeOffice();
 			
-			ExchangeOffice.addNewCurrency(newCurrency);
+			office.addNewCurrency(newCurrency);
 			
-			String message = "Added: " + id + ", " + currencyName + ", " + sellingRate + ", " + buyingRate + ", " + currencySymbol + "\n"; 
+			ExchangeOffice.updateTable();
 			
-			// TODO : Append text to the textArea in ExchangeOffice
+			String message = "Added: " + id + ", " + currencyName + ", " + sellingRate + ", " + buyingRate + ", " + currencySymbol; 
+			
+			ExchangeOffice.appendTextToTextArea(message);
+			
+			refreshTextFields();
 		}
 		catch(Exception exc)
 		{
@@ -115,5 +123,14 @@ public class AddExchangeRateGUI extends JFrame implements ActionListener
 					"ERROR",
 					JOptionPane.ERROR_MESSAGE);
 		}
+	}
+
+	private void refreshTextFields() 
+	{
+		tfID.setText(null);
+		tfAbbreviation.setText(null);
+		tfBuyingRate.setText(null);
+		tfName.setText(null);
+		tfSellingRate.setText(null);
 	}
 }

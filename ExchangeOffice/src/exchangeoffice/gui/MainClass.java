@@ -1,7 +1,11 @@
 package exchangeoffice.gui;
 
 import javax.swing.JFrame;
-
+/*
+ * All code generated MANUALY...
+ * 
+ * @author Marko Stevankovic
+ */
 public class MainClass 
 {
 	public static void main(String[] args) 

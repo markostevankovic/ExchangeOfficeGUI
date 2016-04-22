@@ -6,15 +6,16 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import exchangeoffice.Currency;
+import exchangeoffice.ExchangeOfice;
 
 public class ExchangeRateTableModel extends AbstractTableModel
 {
-	String[] columnNames = {"ID", "Abbreviation", "Selling", "Middle", "Buying", "Name"};
+	String[] columnNames = {"ID", "Symbol", "Name", "Buying", "Selling", "Middle"};
 	List<Currency> currencies;
 	
-	public ExchangeRateTableModel(List<Currency> currencies) 
+	public ExchangeRateTableModel() 
 	{
-		this.currencies = currencies;
+		this.currencies = ExchangeOfice.getInstanceOfExchangeOffice().getAllCurrencies();
 	}
 	
 	@Override
@@ -32,7 +33,18 @@ public class ExchangeRateTableModel extends AbstractTableModel
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex)
 	{
-		return null;
+		Currency cur = currencies.get(rowIndex);
+		
+		switch(columnIndex)
+		{
+			case 0: return cur.getId();
+			case 1: return cur.getSymbol();
+			case 2: return cur.getName();
+			case 3: return cur.getBuying();
+			case 4: return cur.getSelling();
+			case 5: return cur.getMiddle();
+			default: return "N/A";
+		}
 	}
 	
 	@Override
@@ -69,13 +81,13 @@ public class ExchangeRateTableModel extends AbstractTableModel
 			case 3: tmp.setBuying((double)aValue);
 			case 4: tmp.setSelling((double)aValue);
 		}
-		
-		// fireTableDataChanged();
 	}
 	
-	public void addCurrency(Currency newCurrency)
+	/*
+	 * Method which updates content of the table
+	 */
+	public void updateTable()
 	{
-		currencies.add(newCurrency);
 		fireTableDataChanged();
 	}
 	
