@@ -109,7 +109,7 @@ public class AddExchangeRateGUI extends JFrame implements ActionListener
 			
 			ExchangeOffice.updateTable();
 			
-			String message = "Added: " + id + ", " + currencyName + ", " + sellingRate + ", " + buyingRate + ", " + currencySymbol; 
+			String message = "ADDED CURRENCY: " + id + ", " + currencyName + ", " + sellingRate + ", " + buyingRate + ", " + currencySymbol; 
 			
 			ExchangeOffice.appendTextToTextArea(message);
 			

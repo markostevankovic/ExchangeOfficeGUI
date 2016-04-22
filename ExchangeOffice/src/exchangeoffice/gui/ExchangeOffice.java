@@ -203,7 +203,6 @@ public class ExchangeOffice extends JFrame implements ActionListener
 		pack();
 	}
 
-
 	/*
 	 * 
 	 */
@@ -226,6 +225,9 @@ public class ExchangeOffice extends JFrame implements ActionListener
 		
 		else if(source == itemAdd || source == buttonAddExchangeRate)
 			showAddNewExchangeRateFrame();
+		
+		else if(source == itemRemove || source == buttonRemoveExchangeRate)
+			removeSelectedCurrency();
 	}
 
 	/*
@@ -309,6 +311,8 @@ public class ExchangeOffice extends JFrame implements ActionListener
 			ExchangeOfice.getInstanceOfExchangeOffice().getAllCurrencies().clear();
 			
 			ExchangeOfice.getInstanceOfExchangeOffice().getAllCurrencies().addAll(list);
+			
+			updateTable();
 			
 		}
 		catch(Exception e)
@@ -411,5 +415,62 @@ public class ExchangeOffice extends JFrame implements ActionListener
 	public static void appendTextToTextArea(String text)
 	{
 		textArea.append(text + "\n");
+	}
+	
+	/*
+	 * Method which removes selected row
+	 */
+	private void removeSelectedCurrency() 
+	{
+		try
+		{
+			int selectedRow = table.getSelectedRow();
+			
+			ExchangeOfice office = ExchangeOfice.getInstanceOfExchangeOffice();
+			
+			Currency currency = office.getAllCurrencies().get(selectedRow);
+			
+			int dialogResult = JOptionPane.showConfirmDialog (
+					null, 
+					"Would You Like to remove selected row? "
+					+ "\n(row index: " + selectedRow + ")",
+					"Warning",
+					JOptionPane.YES_NO_OPTION);
+			
+			if(dialogResult == JOptionPane.YES_OPTION)
+			{
+				try
+				{
+					office.removeCurrency(currency);
+					
+					ExchangeRateTableModel tableModel = (ExchangeRateTableModel)table.getModel();
+					tableModel.updateTable();
+					
+					appendTextToTextArea("DELETED: row with index->" + selectedRow);
+					
+					JOptionPane.showMessageDialog(
+							null,
+							"Succesfully removed selected row!",
+							"COMMAND COMMITED",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+				catch(Exception exc)
+				{
+					JOptionPane.showMessageDialog(
+							this,
+							"Something went wrong!\nSelected row could not be deleted!",
+							"ERROR", 
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}
+		catch(Exception exc)
+		{
+			JOptionPane.showMessageDialog(
+					this,
+					"You have to choose/selected one ROW",
+					"ERROR", 
+					JOptionPane.ERROR_MESSAGE);
+		}
 	}
 }
