@@ -44,6 +44,7 @@ public class TransactionGUI extends JFrame implements ActionListener, ChangeList
 		setTitle("Perform transaction");
 		setSize(480, 340);
 		setResizable(false);
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ExchangeOffice.class.getResource("/icons/adriana.jpg")));
 		
 		panel = new JPanel();
 		panel.setLayout(null);

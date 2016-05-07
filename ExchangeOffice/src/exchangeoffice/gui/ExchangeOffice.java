@@ -32,9 +32,9 @@ import model.ExchangeRateTableModel;
 
 public class ExchangeOffice extends JFrame implements ActionListener
 {
-	private JPanel panelCenter;
+	// private JPanel panelCenter;
 	private JPanel panelEast;
-	private JPanel panelSouth;
+	// private JPanel panelSouth;
 	
 	private JMenuBar menuBar;
 	
@@ -83,9 +83,9 @@ public class ExchangeOffice extends JFrame implements ActionListener
 		setLayout(new BorderLayout());
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ExchangeOffice.class.getResource("/icons/jessica.jpg")));
 		
-		panelCenter = new JPanel(new BorderLayout());
+		// panelCenter = new JPanel(new BorderLayout());
 		panelEast = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		panelSouth = new JPanel(new BorderLayout());
+		// panelSouth = new JPanel(new BorderLayout());
 		
 		/*
 		 * Adjusting menu bar
@@ -135,7 +135,7 @@ public class ExchangeOffice extends JFrame implements ActionListener
 		/*
 		 * Adjusting central panel
 		 */
-		panelCenter.setPreferredSize(new Dimension(WIDTH - 150, HEIGHT - HEIGHT / 10));
+		// panelCenter.setPreferredSize(new Dimension(WIDTH - 150, HEIGHT - HEIGHT / 10));
 		
 		table = new JTable(new ExchangeRateTableModel());
 		
