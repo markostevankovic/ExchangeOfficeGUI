@@ -21,7 +21,7 @@ public class ExchangeRateTableModel extends AbstractTableModel
 	@Override
 	public int getColumnCount()
 	{
-		return 6;
+		return columnNames.length;
 	}
 
 	@Override
@@ -56,6 +56,7 @@ public class ExchangeRateTableModel extends AbstractTableModel
 	@Override
 	public String getColumnName(int column) 
 	{
+		/*
 		switch(column)
 		{
 			case 0: return columnNames[0];
@@ -65,7 +66,9 @@ public class ExchangeRateTableModel extends AbstractTableModel
 			case 4: return columnNames[4];
 			case 5: return columnNames[5];
 			default: return "N/A";
-		}	
+		}
+		*/
+		return columnNames[column];
 	}
 	
 	@Override
@@ -88,12 +91,6 @@ public class ExchangeRateTableModel extends AbstractTableModel
 	 */
 	public void updateTable()
 	{
-		fireTableDataChanged();
-	}
-	
-	public void removeCurrency(int row)
-	{
-		currencies.remove(row);
 		fireTableDataChanged();
 	}
 }

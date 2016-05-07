@@ -14,7 +14,7 @@ public class MainClass
 	{
 		ExchangeOffice exchangeOffice = new ExchangeOffice();
 		exchangeOffice.setVisible(true);
-		exchangeOffice.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		exchangeOffice.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 	}
 
 }

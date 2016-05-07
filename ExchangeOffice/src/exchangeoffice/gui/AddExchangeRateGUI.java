@@ -36,6 +36,7 @@ public class AddExchangeRateGUI extends JFrame implements ActionListener
 		setSize(400, 300);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ExchangeOffice.class.getResource("/icons/adriana.jpg")));
 		
 		panel = new JPanel(new GridLayout(7, 2, 5, 5));
 		

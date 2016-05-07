@@ -69,13 +69,23 @@ public class ExchangeOffice extends JFrame implements ActionListener
 	
 	public ExchangeOffice()
 	{	
+		/**
+		 * Defining listeners
+		 */
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				closeTheApplication();
+			}
+		});
 		setTitle("Exchange office");
 		setSize(WIDTH, HEIGHT);
 		setLayout(new BorderLayout());
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ExchangeOffice.class.getResource("/icons/jessica.jpg")));
 		
-		panelCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		panelCenter = new JPanel(new BorderLayout());
 		panelEast = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		panelSouth = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		panelSouth = new JPanel(new BorderLayout());
 		
 		/*
 		 * Adjusting menu bar
@@ -149,8 +159,7 @@ public class ExchangeOffice extends JFrame implements ActionListener
 		
 		table.setComponentPopupMenu(popUpMenu);
 		
-		panelCenter.add(scrollPane);
-		
+		// panelCenter.add(scrollPane, BorderLayout.CENTER);		
 		/*
 		 * Adjusting south panel
 		 */
@@ -164,10 +173,11 @@ public class ExchangeOffice extends JFrame implements ActionListener
 		Border border = BorderFactory.createEtchedBorder();
 		Border titled = BorderFactory.createTitledBorder(border, "STATUS");
 		
-		panelSouth.setBorder(titled);
-	
-		panelSouth.add(new JScrollPane(textArea));		
-
+		scrollPaneTextArea.setBorder(titled);
+		
+		// panelSouth.setBorder(titled);
+		// panelSouth.add(new JScrollPane(textArea), BorderLayout.CENTER);
+		
 		/*
 		 * Adjusting east panel
 		 */
@@ -185,25 +195,15 @@ public class ExchangeOffice extends JFrame implements ActionListener
 		panelEast.add(buttonRemoveExchangeRate);
 		panelEast.add(buttonExchange);
 		
-		/**
-		 * Defining listeners
-		 */
-		
-		addWindowListener(new WindowAdapter() 
-		{
-			@Override
-			public void windowClosing(WindowEvent e) 
-			{
-				closeTheApplication();
-			}
-		});
-		
 		/*
 		 * Adding panels to frame...
 		 */
-		add(panelCenter, BorderLayout.CENTER);
+		
+		add(scrollPane, BorderLayout.CENTER);
 		add(panelEast, BorderLayout.EAST);
-		add(panelSouth, BorderLayout.SOUTH);
+		add(scrollPaneTextArea, BorderLayout.SOUTH);
+		// add(panelCenter, BorderLayout.CENTER);
+		// add(panelSouth, BorderLayout.SOUTH);
 		
 		pack();
 	}
@@ -259,9 +259,10 @@ public class ExchangeOffice extends JFrame implements ActionListener
 	{
 		int option = JOptionPane.showConfirmDialog(
 				new ExchangeOffice(),
-				"Do you want the exit this application???",
+				"Quit this application???",
 				"Exit",
-				JOptionPane.YES_NO_OPTION);
+				JOptionPane.YES_NO_CANCEL_OPTION,
+				JOptionPane.QUESTION_MESSAGE);
 
 		if (option == JOptionPane.YES_OPTION)
 			System.exit(0);	
